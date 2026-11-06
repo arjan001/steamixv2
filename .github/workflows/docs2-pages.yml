@@ -3,7 +3,8 @@ name: Deploy docs2 to GitHub Pages
 on:
   push:
     branches: [main, master]
-    paths: [docs2/**, .github/workflows/docs2-pages.yml]
+  release:
+    types: [published]
   workflow_dispatch:
 
 permissions:

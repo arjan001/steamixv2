@@ -236,12 +236,13 @@ enum class AppUpdateChannel(val id: String, val releaseApiUrl: String) {
 
     companion object {
         fun fromCurrentBuild(): AppUpdateChannel {
-            return fromBuildConfig(BuildConfig.APP_UPDATE_CHANNEL, BuildConfig.VERSION_NAME)
+            return fromBuildConfig(BuildConfig.APP_UPDATE_CHANNEL, BuildConfig.VERSION_NAME, BuildConfig.BUILD_TYPE)
         }
 
-        fun fromBuildConfig(channelId: String?, versionName: String): AppUpdateChannel {
+        fun fromBuildConfig(channelId: String?, versionName: String, buildType: String? = null): AppUpdateChannel {
             return when {
                 channelId.equals(Beta.id, ignoreCase = true) -> Beta
+                buildType?.equals("beta", ignoreCase = true) == true -> Beta
                 versionName.contains("-beta", ignoreCase = true) -> Beta
                 else -> Stable
             }

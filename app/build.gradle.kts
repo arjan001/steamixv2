@@ -1,5 +1,4 @@
 import java.util.Properties
-import com.android.build.gradle.api.ApkVariantOutput
 import java.net.URI
 import java.io.File
 import java.io.FileInputStream
@@ -136,18 +135,11 @@ android {
             buildConfigField("String", "XTREAM_DEV_NAME", "\"${localProp("xtream.dev.name")}\"")
             buildConfigField("String", "M3U_DEV_URL", "\"${localProp("m3u.dev.url")}\"")
             buildConfigField("String", "M3U_DEV_NAME", "\"${localProp("m3u.dev.name")}\"")
-            buildConfigField(
-                "String",
-                "OPENSUBTITLES_API_KEY",
-                buildStringLiteral(opensubtitlesApiKey ?: localProp("opensubtitles.api.key"))
-            )
         }
         create("beta") {
             initWith(getByName("release"))
             applicationIdSuffix = ".beta"
             versionNameSuffix = "-beta"
-            buildConfigField("String", "APP_UPDATE_CHANNEL", "\"beta\"")
-            buildConfigField("long", "BUILD_TIMESTAMP_UTC", "${System.currentTimeMillis()}L")
             isDebuggable = false
             // Keep beta close to release behavior but faster for CI/test distribution.
             isMinifyEnabled = false
@@ -404,15 +396,9 @@ abstract class MergeStartupRulesIntoBaselineProfileTask : DefaultTask() {
 
 }
 
-afterEvaluate {
-    // Ship every assembled APK under the IMHOSTREAM product name.
-    android.applicationVariants.forEach { variant ->
-        @Suppress("DEPRECATION")
-        variant.outputs.forEach { output ->
-            if (output is ApkVariantOutput) {
-                output.outputFileName = "IMHOSTREAM-${variant.versionName}.apk"
-            }
-        }
+android.applicationVariants.all { variant ->
+    variant.outputs.forEach { output ->
+        output.outputFileName = "IMHOSTREAM-${variant.versionName}.apk"
     }
 }
 
