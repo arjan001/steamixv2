@@ -6,6 +6,7 @@ import java.io.FileInputStream
 import java.io.Serializable
 import java.security.KeyStore
 import java.security.MessageDigest
+import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.file.DirectoryProperty
@@ -404,9 +405,11 @@ abstract class MergeStartupRulesIntoBaselineProfileTask : DefaultTask() {
 
     // Ship every assembled APK under the IMHOSTREAM product name.
     applicationVariants.all { variant ->
-        variant.outputs.withType(ApkVariantOutput::class.java).all { output ->
-            output.outputFileName = "IMHOSTREAM-${variant.versionName}.apk"
-        }
+        variant.outputs.withType(ApkVariantOutput::class.java).all(
+            Action<ApkVariantOutput> { output ->
+                output.outputFileName = "IMHOSTREAM-${variant.versionName}.apk"
+            }
+        )
     }
 }
 
