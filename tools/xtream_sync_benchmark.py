@@ -16,7 +16,7 @@ from pathlib import Path
 from xtream_sync_perf_fixture import FixtureServer, Scenario
 
 
-PACKAGE = "com.streamvault.app.syncbenchmark"
+PACKAGE = "com.imhostream.iptv.syncbenchmark"
 TEST_CLASS = "com.streamvault.app.benchmark.XtreamLiveSyncBenchmarkTest"
 MODES = {"AUTO", "STREAM_ALL", "CATEGORY_BY_CATEGORY"}
 

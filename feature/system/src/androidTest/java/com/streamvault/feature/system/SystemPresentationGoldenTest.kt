@@ -88,7 +88,7 @@ class SystemPresentationGoldenTest {
         DownloadsContent(
             uiState = DownloadsUiState(
                 isLoading = false,
-                storageConfig = DownloadStorageConfig(displayName = "StreamVault Downloads"),
+                storageConfig = DownloadStorageConfig(displayName = "IMHOSTREAM Downloads"),
             ),
             scaffold = goldenScaffold,
             onChangeFolder = {},
@@ -105,7 +105,7 @@ class SystemPresentationGoldenTest {
         DownloadsContent(
             uiState = DownloadsUiState(
                 isLoading = false,
-                storageConfig = DownloadStorageConfig(displayName = "StreamVault Downloads"),
+                storageConfig = DownloadStorageConfig(displayName = "IMHOSTREAM Downloads"),
                 downloads = listOf(completedDownload()),
             ),
             scaffold = goldenScaffold,

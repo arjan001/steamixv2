@@ -78,7 +78,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.streamvault.app"
+        applicationId = "com.imhostream.iptv"
         minSdk = 25
         targetSdk = 36
         versionCode = 26
@@ -91,7 +91,7 @@ android {
         providers.gradleProperty("compatApi").orNull?.let { expectedApi ->
             testInstrumentationRunnerArguments["expected_api"] = expectedApi
         }
-        buildConfigField("String", "OFFICIAL_APPLICATION_ID", "\"com.streamvault.app\"")
+        buildConfigField("String", "OFFICIAL_APPLICATION_ID", "\"com.imhostream.iptv\"")
         buildConfigField("String", "OFFICIAL_SIGNING_CERT_SHA256", "\"$officialSigningCertSha256\"")
         buildConfigField("String", "OPENSUBTITLES_API_KEY", buildStringLiteral(opensubtitlesApiKey.orEmpty()))
         buildConfigField("String", "APP_UPDATE_CHANNEL", "\"stable\"")
@@ -399,6 +399,13 @@ abstract class MergeStartupRulesIntoBaselineProfileTask : DefaultTask() {
         // Gradle-cache paths and transform hashes differ per machine and therefore cannot be
         // baselined portably. The owning modules (:player, :data) keep their own TLS linting.
         disable += setOf("AndroidGradlePluginVersion", "GradleDependency", "TrustAllX509TrustManager")
+    }
+
+    // Ship every assembled APK under the IMHOSTREAM product name.
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            output.outputFileName = "IMHOSTREAM-${variant.versionName}.apk"
+        }
     }
 }
 

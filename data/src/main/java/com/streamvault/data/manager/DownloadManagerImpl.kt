@@ -712,7 +712,7 @@ class DownloadManagerImpl @Inject constructor(
 
         val directory = File(
             context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) ?: context.filesDir,
-            "StreamVault"
+            "IMHOSTREAM"
         ).apply { mkdirs() }
         val file = uniqueFile(directory, fileName)
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
@@ -817,7 +817,7 @@ class DownloadManagerImpl @Inject constructor(
         val directories = listOfNotNull(
             context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
             context.filesDir
-        ).map { File(it, "StreamVault") }
+        ).map { File(it, "IMHOSTREAM") }
 
         pendingLeftoverOutputBasenames.toList().forEach { baseName ->
             try {

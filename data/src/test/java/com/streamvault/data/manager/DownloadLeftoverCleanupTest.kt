@@ -45,7 +45,7 @@ class DownloadLeftoverCleanupTest {
             .allowMainThreadQueries()
             .build()
         scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-        downloadDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "StreamVault")
+        downloadDir = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "IMHOSTREAM")
             .apply { mkdirs() }
         val preferences = mock<PreferencesRepository> {
             on { downloadTreeUri } doReturn flowOf(null)

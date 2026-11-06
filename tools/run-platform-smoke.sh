@@ -69,8 +69,8 @@ run_compatibility_suite() {
     fi
 
     adb wait-for-device || true
-    adb uninstall com.streamvault.app.debug >/dev/null 2>&1 || true
-    adb uninstall com.streamvault.app.debug.test >/dev/null 2>&1 || true
+    adb uninstall com.imhostream.iptv.debug >/dev/null 2>&1 || true
+    adb uninstall com.imhostream.iptv.debug.test >/dev/null 2>&1 || true
     attempt=$((attempt + 1))
   done
 }

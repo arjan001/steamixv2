@@ -20,7 +20,7 @@ from pathlib import Path
 from typing import Iterable, Sequence
 
 
-DEFAULT_PACKAGE = "com.streamvault.app.debug"
+DEFAULT_PACKAGE = "com.imhostream.iptv.debug"
 DEFAULT_ACTIVITY = "com.streamvault.app.MainActivity"
 DEFAULT_TIMEOUT_SECONDS = 30.0
 DEFAULT_ADB = Path(r"E:\androidSdk\platform-tools\adb.exe")

@@ -24,7 +24,7 @@ class CategoryFlowTraceReporter @Inject constructor() {
     }
 
     companion object {
-        const val UPSTREAM_START_TRACE = "StreamVault.CategoryFlow.UpstreamStart"
-        const val UPSTREAM_STOP_TRACE = "StreamVault.CategoryFlow.UpstreamStop"
+        const val UPSTREAM_START_TRACE = "IMHOSTREAM.CategoryFlow.UpstreamStart"
+        const val UPSTREAM_STOP_TRACE = "IMHOSTREAM.CategoryFlow.UpstreamStop"
     }
 }

@@ -1,5 +1,5 @@
 param(
-    [string]$PackageName = "com.streamvault.app"
+    [string]$PackageName = "com.imhostream.iptv"
 )
 
 $ErrorActionPreference = "Stop"

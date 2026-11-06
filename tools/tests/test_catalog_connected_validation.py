@@ -43,19 +43,19 @@ class CatalogConnectedValidationTest(unittest.TestCase):
           <node text="Completed" />
           <node clickable="true">
             <node text="Fixture Movie One" />
-            <node text="/storage/emulated/0/Android/data/com.streamvault.app.debug/files/Download/StreamVault/Fixture Movie One.mp4" />
+            <node text="/storage/emulated/0/Android/data/com.imhostream.iptv.debug/files/Download/IMHOSTREAM/Fixture Movie One.mp4" />
             <node text="Completed" />
           </node>
           <node clickable="true">
             <node text="Fixture Movie Two" />
-            <node text="/storage/emulated/0/Android/data/com.streamvault.app.debug/files/Download/StreamVault/Fixture Movie Two.mp4" />
+            <node text="/storage/emulated/0/Android/data/com.imhostream.iptv.debug/files/Download/IMHOSTREAM/Fixture Movie Two.mp4" />
           </node>
         </hierarchy>"""
         incomplete_dump = """<hierarchy>
           <node text="Completed" />
           <node clickable="true">
             <node text="Fixture Movie One" />
-            <node text="/storage/emulated/0/Android/data/com.streamvault.app.debug/files/Download/StreamVault/Fixture Movie One.mp4" />
+            <node text="/storage/emulated/0/Android/data/com.imhostream.iptv.debug/files/Download/IMHOSTREAM/Fixture Movie One.mp4" />
           </node>
         </hierarchy>"""
 

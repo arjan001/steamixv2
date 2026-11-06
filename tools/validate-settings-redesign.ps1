@@ -9,9 +9,9 @@ $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$appId = "com.streamvault.app.debug"
+$appId = "com.imhostream.iptv.debug"
 $activity = "com.streamvault.app.MainActivity"
-$appTestId = "com.streamvault.app.debug.test"
+$appTestId = "com.imhostream.iptv.debug.test"
 $settingsTestId = "com.streamvault.feature.settings.test"
 $runner = "androidx.test.runner.AndroidJUnitRunner"
 $routeExtra = "com.streamvault.app.extra.EXTERNAL_ROUTE"
@@ -353,7 +353,7 @@ Start-Sleep -Milliseconds 700
 Save-State "search-result-restored"
 
 Save-AdbOutput -Path (Join-Path $evidenceDir "logcat.txt") -Arguments @("logcat", "-d", "-v", "time") | Out-Null
-$fatalMatches = Select-String -Path (Join-Path $evidenceDir "logcat.txt") -Pattern "FATAL EXCEPTION|ANR in com.streamvault.app.debug|Process com.streamvault.app.debug .* died"
+$fatalMatches = Select-String -Path (Join-Path $evidenceDir "logcat.txt") -Pattern "FATAL EXCEPTION|ANR in com.imhostream.iptv.debug|Process com.imhostream.iptv.debug .* died"
 if ($fatalMatches) {
     $fatalMatches | Set-Content -LiteralPath (Join-Path $evidenceDir "fatal-log-matches.txt") -Encoding utf8
     throw "Fatal app evidence was found in logcat."

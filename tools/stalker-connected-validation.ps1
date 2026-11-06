@@ -48,7 +48,7 @@ for ($index = 0; $index -lt $ScreenshotCount; $index++) {
 
 $hashes = Get-ChildItem -LiteralPath $runDirectory -Filter 'frame_*.png' | Get-FileHash -Algorithm SHA256
 $uniqueHashes = @($hashes.Hash | Sort-Object -Unique).Count
-$mediaSession = (& $adb shell dumpsys media_session | Select-String 'package=com.streamvault.app|state=PlaybackState|error=' | ForEach-Object Line) -join "`n"
+$mediaSession = (& $adb shell dumpsys media_session | Select-String 'package=com.imhostream.iptv|state=PlaybackState|error=' | ForEach-Object Line) -join "`n"
 
 $safeLogLines = & $adb logcat -d -v time | Select-String 'fatal-error|live-recovery selected|live-recovery no-candidate|prepare resolvedStreamType=MPEG_TS_LIVE|source-malformed live-ts-fallback|Player stuck|state=ERROR|retry category=|first-frame-success|prepare resolvedStreamType=HLS|read-progress streamType=HLS'
 $sanitizedLog = $safeLogLines -replace 'https?://\S+', '<url-redacted>' -replace '(?i)(token|cookie|signature|authorization|mac)=?\S*', '$1=<redacted>' -replace '(?i)([0-9A-F]{2}:){5}[0-9A-F]{2}', '<mac-redacted>'

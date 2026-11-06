@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IMHOSTREAM — Download</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1.5rem;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, #123524, #0b0f0d 60%);
+    color: #e8f5ec; text-align: center; padding: 2rem 1rem;
+  }
+  h1 { font-size: 2.6rem; margin: 0; letter-spacing: 0.5px; }
+  h1 span { color: #34d399; }
+  p.sub { margin: 0; opacity: 0.75; }
+  .card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 1.25rem 1.75rem; min-width: 320px;
+  }
+  .card .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; }
+  .card .value { font-size: 1.35rem; font-weight: 600; margin-top: 0.25rem; }
+  a.btn {
+    display: inline-block; margin-top: 1.75rem; padding: 0.9rem 2.4rem;
+    font-size: 1.15rem; font-weight: 700; text-decoration: none; border-radius: 999px;
+    background: #16a34a; color: #fff; box-shadow: 0 6px 24px rgba(22,163,74,0.45);
+    transition: transform .15s ease, background .15s ease;
+  }
+  a.btn:hover { background: #15803d; transform: translateY(-2px); }
+  a.btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,0.3); box-shadow: none; font-weight: 600; }
+  .shots { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-top: 1rem; max-width: 900px; }
+  .shots img { width: 260px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); }
+  footer { margin-top: 1rem; font-size: 0.8rem; opacity: 0.5; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+  <h1>IM<span>HOSTREAM</span></h1>
+  <p class="sub">IPTV &amp; live TV player for Android &amp; Android TV</p>
+
+  <div class="card">
+    <div class="label">Latest release</div>
+    <div class="value" id="release-tag">loading…</div>
+    <div class="value" id="release-date" style="font-size:0.95rem;font-weight:400;opacity:0.7;margin-top:0.2rem"></div>
+  </div>
+
+  <a class="btn" id="download-btn" href="https://github.com/arjan001/steamixv2/releases/latest">
+    Download APK
+  </a>
+  <a class="btn secondary" href="https://github.com/arjan001/steamixv2/releases">All releases</a>
+
+  <div class="shots">
+    <img src="images/LiveTV.png" alt="IMHOSTREAM Live TV" loading="lazy" />
+    <img src="images/Movies.png" alt="IMHOSTREAM Movies" loading="lazy" />
+    <img src="images/Guide.png" alt="IMHOSTREAM Guide" loading="lazy" />
+    <img src="images/Sports.png" alt="IMHOSTREAM Sports" loading="lazy" />
+  </div>
+
+  <footer>
+    Package: <code>com.imhostream.iptv</code> &middot;
+    Source: <a href="https://github.com/arjan001/steamixv2" style="color:#34d399">github.com/arjan001/steamixv2</a>
+  </footer>
+
+<script>
+  const REPO = "arjan001/steamixv2";
+  const FALLBACK = "https://github.com/" + REPO + "/releases/latest";
+
+  fetch("https://api.github.com/repos/" + REPO + "/releases/latest", {
+    headers: { "Accept": "application/vnd.github+json" }
+  })
+    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(release => {
+      document.getElementById("release-tag").textContent = release.tag_name || release.name || "latest";
+      const when = release.published_at ? new Date(release.published_at) : null;
+      document.getElementById("release-date").textContent =
+        when ? "Published " + when.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) : "";
+
+      const assets = release.assets || [];
+      const apk = assets.find(a => a.name === "IMHOSTREAM.apk")
+               || assets.find(a => /\.apk$/i.test(a.name) && !/beta/i.test(a.name))
+               || assets.find(a => /\.apk$/i.test(a.name));
+      if (apk && apk.browser_download_url) {
+        const btn = document.getElementById("download-btn");
+        btn.href = apk.browser_download_url;
+        btn.textContent = "Download " + apk.name;
+      }
+    })
+    .catch(() => {
+      document.getElementById("release-tag").textContent = "Latest release";
+      document.getElementById("release-date").textContent = "Open the releases page to download.";
+    });
+</script>
+</body>
+</html>

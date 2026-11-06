@@ -58,7 +58,7 @@ import javax.inject.Inject
 import java.io.IOException
 
 @AndroidEntryPoint
-class StreamVaultTvInputService : TvInputService() {
+class IMHOSTREAMTvInputService : TvInputService() {
 
     @Inject
     lateinit var channelRepository: ChannelRepository
@@ -231,7 +231,7 @@ class StreamVaultTvInputService : TvInputService() {
                         sourceRetryAlreadyUsed = endRecovery.hasAttempted
                     )
                     if (action == LiveStartupWatchdog.Action.NONE || info == null) continue
-                    Log.w("StreamVaultTvInput", "startup-watchdog action=$action")
+                    Log.w("IMHOSTREAMTvInput", "startup-watchdog action=$action")
                     if (action == LiveStartupWatchdog.Action.REFRESH_SOURCE) {
                         startupRefreshGate.begin(android.os.SystemClock.elapsedRealtime())
                         player.stop()
@@ -489,8 +489,8 @@ class StreamVaultTvInputService : TvInputService() {
     )
 
     private companion object {
-        const val TAG = "StreamVaultTvInput"
-        const val DEFAULT_USER_AGENT = "StreamVaultTvInput"
+        const val TAG = "IMHOSTREAMTvInput"
+        const val DEFAULT_USER_AGENT = "IMHOSTREAMTvInput"
         const val CHANNEL_COLUMN_INTERNAL_PROVIDER_DATA = "internal_provider_data"
         const val ENTRY_SEPARATOR = ":"
     }
