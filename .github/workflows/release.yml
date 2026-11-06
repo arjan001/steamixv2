@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,7 +55,13 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Prepare optional signing files
+      - name: Cache release keystore
+        uses: actions/cache@v4
+        with:
+          path: keystore/release.jks
+          key: imhostream-release-keystore-v1
+
+      - name: Prepare signing files
         shell: bash
         env:
           RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
@@ -59,19 +69,38 @@ jobs:
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: |
+          mkdir -p keystore
           if [ -n "$RELEASE_KEYSTORE_BASE64" ] && [ -n "$RELEASE_STORE_PASSWORD" ] && [ -n "$RELEASE_KEY_ALIAS" ] && [ -n "$RELEASE_KEY_PASSWORD" ]; then
-            mkdir -p keystore
             echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > keystore/release.jks
-            printf '%s\n' \
-              'storeFile=keystore/release.jks' \
-              "storePassword=$RELEASE_STORE_PASSWORD" \
-              "keyAlias=$RELEASE_KEY_ALIAS" \
-              "keyPassword=$RELEASE_KEY_PASSWORD" \
-              > keystore.properties
-            echo "Release signing files prepared."
+            STORE_PASS="$RELEASE_STORE_PASSWORD"
+            KEY_ALIAS="$RELEASE_KEY_ALIAS"
+            KEY_PASS="$RELEASE_KEY_PASSWORD"
+            echo "Release signing files prepared from secrets."
           else
-            echo "No signing secrets configured. Building unsigned release APK."
+            # No secrets configured: generate a keystore once and reuse it via
+            # actions/cache so every release APK keeps the same signature.
+            if [ ! -f keystore/release.jks ]; then
+              keytool -genkeypair -v \
+                -keystore keystore/release.jks -alias android \
+                -keyalg RSA -keysize 4096 -validity 10950 \
+                -storepass android -keypass android \
+                -dname "CN=IMHOSTREAM, OU=Mobile, O=IMHOSTREAM, C=US" \
+                > /dev/null 2>&1
+              echo "Generated CI release keystore (will be cached)."
+            else
+              echo "Reusing cached CI release keystore."
+            fi
+            STORE_PASS="android"
+            KEY_ALIAS="android"
+            KEY_PASS="android"
+            echo "Release signing configured with cached CI keystore."
           fi
+          printf '%s\n' \
+            'storeFile=keystore/release.jks' \
+            "storePassword=$STORE_PASS" \
+            "keyAlias=$KEY_ALIAS" \
+            "keyPassword=$KEY_PASS" \
+            > keystore.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
