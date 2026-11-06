@@ -1,4 +1,5 @@
 import java.util.Properties
+import com.android.build.gradle.api.ApkVariantOutput
 import java.net.URI
 import java.io.File
 import java.io.FileInputStream
@@ -403,7 +404,7 @@ abstract class MergeStartupRulesIntoBaselineProfileTask : DefaultTask() {
 
     // Ship every assembled APK under the IMHOSTREAM product name.
     applicationVariants.all { variant ->
-        variant.outputs.all { output ->
+        variant.outputs.withType(ApkVariantOutput::class.java).all { output ->
             output.outputFileName = "IMHOSTREAM-${variant.versionName}.apk"
         }
     }
